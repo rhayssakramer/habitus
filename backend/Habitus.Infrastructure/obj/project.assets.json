@@ -1,0 +1,129 @@
+{
+  "version": 3,
+  "targets": {
+    "net9.0": {
+      "Habitus.Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "Habitus.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Habitus.Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Habitus.Application.dll": {}
+        }
+      },
+      "Habitus.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/Habitus.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Habitus.Domain.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Habitus.Application/1.0.0": {
+      "type": "project",
+      "path": "../Habitus.Application/Habitus.Application.csproj",
+      "msbuildProject": "../Habitus.Application/Habitus.Application.csproj"
+    },
+    "Habitus.Domain/1.0.0": {
+      "type": "project",
+      "path": "../Habitus.Domain/Habitus.Domain.csproj",
+      "msbuildProject": "../Habitus.Domain/Habitus.Domain.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net9.0": [
+      "Habitus.Application >= 1.0.0",
+      "Habitus.Domain >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\r.bezerra.de.melo\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\r.bezerra.de.melo\\Documents\\GitHub\\habitus\\backend\\Habitus.Infrastructure\\Habitus.Infrastructure.csproj",
+      "projectName": "Habitus.Infrastructure",
+      "projectPath": "C:\\Users\\r.bezerra.de.melo\\Documents\\GitHub\\habitus\\backend\\Habitus.Infrastructure\\Habitus.Infrastructure.csproj",
+      "packagesPath": "C:\\Users\\r.bezerra.de.melo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\r.bezerra.de.melo\\Documents\\GitHub\\habitus\\backend\\Habitus.Infrastructure\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\r.bezerra.de.melo\\Documents\\GitHub\\habitus\\NuGet.Config",
+        "C:\\Users\\r.bezerra.de.melo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net9.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
+        "https://api.nuget.org/v3/index.json": {},
+        "https://nexus3-cicd-tools.internal.grupofleury.com.br/repository/nuget-hosted/": {}
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "projectReferences": {
+            "C:\\Users\\r.bezerra.de.melo\\Documents\\GitHub\\habitus\\backend\\Habitus.Application\\Habitus.Application.csproj": {
+              "projectPath": "C:\\Users\\r.bezerra.de.melo\\Documents\\GitHub\\habitus\\backend\\Habitus.Application\\Habitus.Application.csproj"
+            },
+            "C:\\Users\\r.bezerra.de.melo\\Documents\\GitHub\\habitus\\backend\\Habitus.Domain\\Habitus.Domain.csproj": {
+              "projectPath": "C:\\Users\\r.bezerra.de.melo\\Documents\\GitHub\\habitus\\backend\\Habitus.Domain\\Habitus.Domain.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.300"
+    },
+    "frameworks": {
+      "net9.0": {
+        "targetAlias": "net9.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}
