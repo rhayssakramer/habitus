@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habitus - Dashboard Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .sidebar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 0;
+        }
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 12px 20px;
+            margin: 5px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .sidebar .nav-link i {
+            width: 20px;
+            margin-right: 10px;
+        }
+        .main-content {
+            padding: 20px;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: none;
+            transition: transform 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .stat-card .icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            margin-bottom: 15px;
+        }
+        .stat-card .icon.users { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .stat-card .icon.tasks { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .stat-card .icon.habits { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .stat-card .icon.events { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        
+        .stat-card h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .stat-card p {
+            color: #6c757d;
+            margin: 0;
+            font-weight: 500;
+        }
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .user-table {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .table th {
+            border-top: none;
+            font-weight: 600;
+            color: #333;
+            padding: 15px;
+        }
+        .table td {
+            padding: 15px;
+            vertical-align: middle;
+        }
+        .badge-role {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 12px;
+        }
+        .header {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 sidebar">
+                <div class="p-3">
+                    <h4 class="text-white mb-4">
+                        <i class="fas fa-check-circle"></i> Habitus
+                    </h4>
+                    <nav class="nav flex-column">
+                        <a href="#" class="nav-link active" data-section="dashboard">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </a>
+                        <a href="#" class="nav-link" data-section="users">
+                            <i class="fas fa-users"></i> Usuários
+                        </a>
+                        <a href="#" class="nav-link" data-section="tasks">
+                            <i class="fas fa-tasks"></i> Tarefas
+                        </a>
+                        <a href="#" class="nav-link" data-section="habits">
+                            <i class="fas fa-chart-line"></i> Hábitos
+                        </a>
+                        <a href="#" class="nav-link" data-section="events">
+                            <i class="fas fa-calendar"></i> Eventos
+                        </a>
+                        <a href="#" class="nav-link" data-section="audit">
+                            <i class="fas fa-clipboard-list"></i> Auditoria
+                        </a>
+                        <hr class="text-white">
+                        <a href="#" class="nav-link" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i> Sair
+                        </a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 col-lg-10 main-content">
+                <!-- Header -->
+                <div class="header">
+                    <div class="logo">
+                        <i class="fas fa-crown"></i> Painel Administrativo
+                    </div>
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <div id="adminName">Carregando...</div>
+                            <small class="text-muted">Administrador</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Section -->
+                <div id="dashboard-section">
+                    <!-- Stats Cards -->
+                    <div class="row mb-4">
+                        <div class="col-xl-3 col-md-6 mb-3">
+                            <div class="stat-card">
+                                <div class="icon users">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <h3 id="totalUsers">0</h3>
+                                <p>Total de Usuários</p>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-3">
+                            <div class="stat-card">
+                                <div class="icon tasks">
+                                    <i class="fas fa-tasks"></i>
+                                </div>
+                                <h3 id="totalTasks">0</h3>
+                                <p>Total de Tarefas</p>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-3">
+                            <div class="stat-card">
+                                <div class="icon habits">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <h3 id="totalHabits">0</h3>
+                                <p>Total de Hábitos</p>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-3">
+                            <div class="stat-card">
+                                <div class="icon events">
+                                    <i class="fas fa-calendar"></i>
+                                </div>
+                                <h3 id="totalEvents">0</h3>
+                                <p>Total de Eventos</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts -->
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="chart-container">
+                                <h5 class="mb-3">Registro de Usuários (Últimos 30 dias)</h5>
+                                <canvas id="userRegistrationChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="chart-container">
+                                <h5 class="mb-3">Conclusão de Tarefas</h5>
+                                <canvas id="taskCompletionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Users -->
+                    <div class="user-table">
+                        <h5 class="mb-3">Usuários Recentes</h5>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Usuário</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th>Último Login</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recentUsersTable">
+                                    <tr>
+                                        <td colspan="6" class="text-center">Carregando...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Users Section (oculta inicialmente) -->
+                <div id="users-section" class="d-none">
+                    <div class="user-table">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5>Gerenciar Usuários</h5>
+                            <div>
+                                <input type="search" class="form-control" placeholder="Buscar usuários..." id="userSearch">
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Usuário</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th>Estatísticas</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="allUsersTable">
+                                    <tr>
+                                        <td colspan="6" class="text-center">Carregando...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Configuração da API
+        const API_BASE_URL = 'https://localhost:7000/api';
+        let currentUser = null;
+        let dashboardData = null;
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            loadDashboard();
+            setupNavigation();
+        });
+
+        // Verificar autenticação
+        function checkAuth() {
+            const token = localStorage.getItem('accessToken');
+            const userInfo = localStorage.getItem('userInfo');
+            
+            if (!token || !userInfo) {
+                window.location.href = '/login.html';
+                return;
+            }
+
+            currentUser = JSON.parse(userInfo);
+            
+            // Verificar se é admin
+            if (currentUser.role !== 'Admin' && currentUser.role !== 'SuperAdmin') {
+                alert('Acesso negado. Apenas administradores podem acessar esta área.');
+                window.location.href = '/login.html';
+                return;
+            }
+
+            document.getElementById('adminName').textContent = currentUser.fullName;
+        }
+
+        // Carregar dados do dashboard
+        async function loadDashboard() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/dashboard`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                    }
+                });
+
+                if (response.ok) {
+                    dashboardData = await response.json();
+                    updateDashboardStats();
+                    createCharts();
+                    loadRecentUsers();
+                } else if (response.status === 401) {
+                    logout();
+                } else {
+                    console.error('Erro ao carregar dashboard');
+                }
+            } catch (error) {
+                console.error('Erro de conexão:', error);
+                showError('Erro ao carregar dados do dashboard');
+            }
+        }
+
+        // Atualizar estatísticas
+        function updateDashboardStats() {
+            if (!dashboardData) return;
+
+            document.getElementById('totalUsers').textContent = dashboardData.totalUsers;
+            document.getElementById('totalTasks').textContent = dashboardData.totalTasks;
+            document.getElementById('totalHabits').textContent = dashboardData.totalHabits;
+            document.getElementById('totalEvents').textContent = dashboardData.totalEvents;
+        }
+
+        // Criar gráficos
+        function createCharts() {
+            if (!dashboardData) return;
+
+            // Gráfico de registro de usuários
+            const userCtx = document.getElementById('userRegistrationChart').getContext('2d');
+            new Chart(userCtx, {
+                type: 'line',
+                data: {
+                    labels: dashboardData.userRegistrationChart.map(item => 
+                        new Date(item.date).toLocaleDateString('pt-BR')
+                    ),
+                    datasets: [{
+                        label: 'Novos Usuários',
+                        data: dashboardData.userRegistrationChart.map(item => item.count),
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Gráfico de conclusão de tarefas
+            const taskCtx = document.getElementById('taskCompletionChart').getContext('2d');
+            const latestTaskData = dashboardData.taskCompletionChart[dashboardData.taskCompletionChart.length - 1];
+            const completionRate = latestTaskData.totalTasks > 0 ? 
+                (latestTaskData.completedTasks / latestTaskData.totalTasks * 100) : 0;
+
+            new Chart(taskCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Concluídas', 'Pendentes'],
+                    datasets: [{
+                        data: [latestTaskData.completedTasks, latestTaskData.totalTasks - latestTaskData.completedTasks],
+                        backgroundColor: ['#43e97b', '#f093fb'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Carregar usuários recentes
+        function loadRecentUsers() {
+            if (!dashboardData || !dashboardData.recentUsers) return;
+
+            const tbody = document.getElementById('recentUsersTable');
+            tbody.innerHTML = '';
+
+            dashboardData.recentUsers.forEach(user => {
+                const row = createUserRow(user);
+                tbody.appendChild(row);
+            });
+        }
+
+        // Criar linha da tabela de usuário
+        function createUserRow(user) {
+            const tr = document.createElement('tr');
+            
+            const roleClass = user.role === 'SuperAdmin' ? 'bg-danger' : 
+                             user.role === 'Admin' ? 'bg-warning' : 'bg-primary';
+            
+            const statusClass = user.isActive ? 'bg-success' : 'bg-secondary';
+            const statusText = user.isActive ? 'Ativo' : 'Inativo';
+            
+            const lastLogin = user.lastLoginAt ? 
+                new Date(user.lastLoginAt).toLocaleDateString('pt-BR') : 'Nunca';
+
+            tr.innerHTML = `
+                <td>
+                    <div class="d-flex align-items-center">
+                        <div class="user-avatar me-2" style="width: 32px; height: 32px; font-size: 14px;">
+                            ${user.firstName.charAt(0)}
+                        </div>
+                        <div>
+                            <strong>${user.fullName}</strong>
+                        </div>
+                    </div>
+                </td>
+                <td>${user.email}</td>
+                <td><span class="badge badge-role ${roleClass}">${user.role}</span></td>
+                <td><span class="badge ${statusClass}">${statusText}</span></td>
+                <td>${lastLogin}</td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-primary" onclick="viewUser('${user.id}')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn btn-outline-warning" onclick="editUser('${user.id}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+            
+            return tr;
+        }
+
+        // Configurar navegação
+        function setupNavigation() {
+            const navLinks = document.querySelectorAll('.sidebar .nav-link[data-section]');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remover active de todos os links
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    
+                    // Adicionar active ao link clicado
+                    this.classList.add('active');
+                    
+                    // Mostrar seção correspondente
+                    const section = this.dataset.section;
+                    showSection(section);
+                });
+            });
+        }
+
+        // Mostrar seção
+        function showSection(sectionName) {
+            // Ocultar todas as seções
+            const sections = document.querySelectorAll('[id$="-section"]');
+            sections.forEach(section => section.classList.add('d-none'));
+            
+            // Mostrar seção selecionada
+            const targetSection = document.getElementById(`${sectionName}-section`);
+            if (targetSection) {
+                targetSection.classList.remove('d-none');
+            }
+            
+            // Carregar dados específicos da seção
+            switch(sectionName) {
+                case 'users':
+                    loadAllUsers();
+                    break;
+                case 'audit':
+                    loadAuditLogs();
+                    break;
+            }
+        }
+
+        // Carregar todos os usuários
+        async function loadAllUsers() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/users`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                    }
+                });
+
+                if (response.ok) {
+                    const users = await response.json();
+                    displayAllUsers(users);
+                } else {
+                    console.error('Erro ao carregar usuários');
+                }
+            } catch (error) {
+                console.error('Erro de conexão:', error);
+            }
+        }
+
+        // Exibir todos os usuários
+        function displayAllUsers(users) {
+            const tbody = document.getElementById('allUsersTable');
+            tbody.innerHTML = '';
+
+            users.forEach(user => {
+                const tr = document.createElement('tr');
+                
+                const roleClass = user.role === 'SuperAdmin' ? 'bg-danger' : 
+                                 user.role === 'Admin' ? 'bg-warning' : 'bg-primary';
+                
+                const statusClass = user.isActive ? 'bg-success' : 'bg-secondary';
+                const statusText = user.isActive ? 'Ativo' : 'Inativo';
+
+                tr.innerHTML = `
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="user-avatar me-2" style="width: 32px; height: 32px; font-size: 14px;">
+                                ${user.firstName.charAt(0)}
+                            </div>
+                            <div>
+                                <strong>${user.fullName}</strong>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${user.email}</td>
+                    <td><span class="badge badge-role ${roleClass}">${user.role}</span></td>
+                    <td><span class="badge ${statusClass}">${statusText}</span></td>
+                    <td>
+                        <small>
+                            Tarefas: ${user.totalTasks}<br>
+                            Hábitos: ${user.activeHabits}<br>
+                            Eventos: ${user.totalCalendarEvents}
+                        </small>
+                    </td>
+                    <td>
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-outline-primary" onclick="viewUser('${user.id}')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-outline-warning" onclick="editUser('${user.id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-outline-${user.isActive ? 'danger' : 'success'}" onclick="toggleUserStatus('${user.id}', ${!user.isActive})">
+                                <i class="fas fa-${user.isActive ? 'ban' : 'check'}"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Funções de ação
+        function viewUser(userId) {
+            alert(`Visualizar usuário: ${userId}`);
+        }
+
+        function editUser(userId) {
+            alert(`Editar usuário: ${userId}`);
+        }
+
+        async function toggleUserStatus(userId, newStatus) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/users/${userId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ isActive: newStatus })
+                });
+
+                if (response.ok) {
+                    loadAllUsers(); // Recarregar lista
+                    const action = newStatus ? 'ativado' : 'desativado';
+                    showSuccess(`Usuário ${action} com sucesso`);
+                } else {
+                    showError('Erro ao alterar status do usuário');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                showError('Erro de conexão');
+            }
+        }
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('userInfo');
+            window.location.href = '/login.html';
+        }
+
+        // Funções auxiliares
+        function showError(message) {
+            alert('Erro: ' + message);
+        }
+
+        function showSuccess(message) {
+            alert('Sucesso: ' + message);
+        }
+    </script>
+</body>
+</html>
