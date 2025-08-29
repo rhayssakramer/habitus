@@ -1,0 +1,6 @@
+C:\Users\r.bezerra.de.melo\Documents\GitHub\habitus\backend\Habitus.Application\obj\Debug\net9.0\Habitus.Application.csproj.AssemblyReference.cache
+C:\Users\r.bezerra.de.melo\Documents\GitHub\habitus\backend\Habitus.Application\obj\Debug\net9.0\Habitus.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\r.bezerra.de.melo\Documents\GitHub\habitus\backend\Habitus.Application\obj\Debug\net9.0\Habitus.Application.AssemblyInfoInputs.cache
+C:\Users\r.bezerra.de.melo\Documents\GitHub\habitus\backend\Habitus.Application\obj\Debug\net9.0\Habitus.Application.AssemblyInfo.cs
+C:\Users\r.bezerra.de.melo\Documents\GitHub\habitus\backend\Habitus.Application\obj\Debug\net9.0\Habitus.Application.csproj.CoreCompileInputs.cache
+C:\Users\r.bezerra.de.melo\Documents\GitHub\habitus\backend\Habitus.Application\obj\Debug\net9.0\Habitus.Application.sourcelink.json
