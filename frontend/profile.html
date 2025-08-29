@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - Habitus</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #818cf8;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --info-color: #3b82f6;
+            --light-color: #f8fafc;
+            --dark-color: #1e293b;
+        }
+
+        body {
+            background-color: var(--light-color);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid white;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+
+        .profile-placeholder {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            border: 4px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .card {
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+            margin-bottom: 2rem;
+        }
+
+        .card-header {
+            background: transparent;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 1.5rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.25);
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: #4338ca;
+            border-color: #4338ca;
+        }
+
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+        }
+
+        .upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background: #fafbfc;
+        }
+
+        .upload-area.dragover {
+            border-color: var(--primary-color);
+            background: rgba(79, 70, 229, 0.05);
+        }
+
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .completion-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: var(--success-color);
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        .profile-section {
+            position: relative;
+        }
+
+        .edit-mode .form-control[readonly] {
+            background-color: #f8f9fa;
+        }
+
+        .progress {
+            height: 8px;
+            border-radius: 4px;
+        }
+
+        .nav-pills .nav-link {
+            border-radius: 0.5rem;
+            margin-right: 0.5rem;
+            font-weight: 500;
+        }
+
+        .nav-pills .nav-link.active {
+            background-color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .profile-header {
+                padding: 2rem 0;
+            }
+            
+            .profile-avatar,
+            .profile-placeholder {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="dashboard.html">
+                <i class="fas fa-seedling text-primary me-2"></i>
+                Habitus
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html">
+                            <i class="fas fa-home me-1"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="tasks.html">
+                            <i class="fas fa-tasks me-1"></i> Tarefas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="habits.html">
+                            <i class="fas fa-chart-line me-1"></i> Hábitos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="calendar.html">
+                            <i class="fas fa-calendar me-1"></i> Calendário
+                        </a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                            <img src="" alt="Avatar" class="rounded-circle me-2" width="32" height="32" id="navAvatar" style="display: none;">
+                            <i class="fas fa-user-circle me-1" id="navDefaultAvatar"></i>
+                            <span id="navUserName">Usuário</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item active" href="profile.html">
+                                <i class="fas fa-user me-2"></i> Meu Perfil
+                            </a></li>
+                            <li><a class="dropdown-item" href="settings.html">
+                                <i class="fas fa-cog me-2"></i> Configurações
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()">
+                                <i class="fas fa-sign-out-alt me-2"></i> Sair
+                            </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-3 text-center">
+                    <img src="" alt="Foto de Perfil" class="profile-avatar" id="profileAvatar" style="display: none;">
+                    <div class="profile-placeholder" id="profilePlaceholder">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <button class="btn btn-outline-light btn-sm" onclick="triggerFileUpload()">
+                        <i class="fas fa-camera me-1"></i> Alterar Foto
+                    </button>
+                    <input type="file" id="photoUpload" accept="image/*" style="display: none;">
+                </div>
+                <div class="col-md-6">
+                    <h2 class="mb-2" id="profileName">Carregando...</h2>
+                    <p class="mb-1" id="profileEmail">email@exemplo.com</p>
+                    <p class="mb-2" id="profileMemberSince">Membro desde: ...</p>
+                    <div class="d-flex align-items-center">
+                        <span class="me-2">Perfil:</span>
+                        <div class="progress flex-grow-1 me-2" style="max-width: 200px;">
+                            <div class="progress-bar bg-warning" role="progressbar" id="profileProgress" style="width: 0%"></div>
+                        </div>
+                        <span id="profileCompletionText">0%</span>
+                    </div>
+                </div>
+                <div class="col-md-3 text-center">
+                    <div class="stats-card">
+                        <h5 class="mb-1" id="profileAge">-</h5>
+                        <small>Idade</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Alert Container -->
+        <div id="alertContainer"></div>
+
+        <!-- Profile Navigation -->
+        <ul class="nav nav-pills mb-4" id="profileTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="personal-tab" data-bs-toggle="pill" data-bs-target="#personal" type="button" role="tab">
+                    <i class="fas fa-user me-2"></i> Dados Pessoais
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="address-tab" data-bs-toggle="pill" data-bs-target="#address" type="button" role="tab">
+                    <i class="fas fa-map-marker-alt me-2"></i> Endereço
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="security-tab" data-bs-toggle="pill" data-bs-target="#security" type="button" role="tab">
+                    <i class="fas fa-shield-alt me-2"></i> Segurança
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="preferences-tab" data-bs-toggle="pill" data-bs-target="#preferences" type="button" role="tab">
+                    <i class="fas fa-cog me-2"></i> Preferências
+                </button>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content" id="profileTabContent">
+            <!-- Personal Data Tab -->
+            <div class="tab-pane fade show active" id="personal" role="tabpanel">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-user text-primary me-2"></i>
+                            Dados Pessoais
+                        </h5>
+                        <button class="btn btn-outline-primary btn-sm" id="editPersonalBtn" onclick="toggleEditMode('personal')">
+                            <i class="fas fa-edit me-1"></i> Editar
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <form id="personalForm">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="firstName" class="form-label">Nome *</label>
+                                    <input type="text" class="form-control" id="firstName" name="firstName" readonly required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="lastName" class="form-label">Sobrenome *</label>
+                                    <input type="text" class="form-control" id="lastName" name="lastName" readonly required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">Email *</label>
+                                    <input type="email" class="form-control" id="email" name="email" readonly required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="phone" class="form-label">Telefone</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" readonly>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="dateOfBirth" class="form-label">Data de Nascimento</label>
+                                    <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" readonly>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Status da Conta</label>
+                                    <div class="d-flex align-items-center">
+                                        <span class="badge bg-success me-2" id="accountStatus">Ativa</span>
+                                        <span class="badge bg-info" id="emailStatus">Email Confirmado</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-none" id="personalFormActions">
+                                <hr>
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button type="button" class="btn btn-outline-secondary" onclick="cancelEdit('personal')">
+                                        <i class="fas fa-times me-1"></i> Cancelar
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save me-1"></i> Salvar Alterações
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Address Tab -->
+            <div class="tab-pane fade" id="address" role="tabpanel">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                            Endereço
+                        </h5>
+                        <button class="btn btn-outline-primary btn-sm" id="editAddressBtn" onclick="toggleEditMode('address')">
+                            <i class="fas fa-edit me-1"></i> Editar
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <form id="addressForm">
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="zipCode" class="form-label">CEP</label>
+                                    <input type="text" class="form-control" id="zipCodeProfile" name="zipCode" readonly>
+                                </div>
+                                <div class="col-md-8 mb-3">
+                                    <label for="street" class="form-label">Endereço</label>
+                                    <input type="text" class="form-control" id="streetProfile" name="street" readonly>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 mb-3">
+                                    <label for="number" class="form-label">Número</label>
+                                    <input type="text" class="form-control" id="numberProfile" name="number" readonly>
+                                </div>
+                                <div class="col-md-5 mb-3">
+                                    <label for="complement" class="form-label">Complemento</label>
+                                    <input type="text" class="form-control" id="complementProfile" name="complement" readonly>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="neighborhood" class="form-label">Bairro</label>
+                                    <input type="text" class="form-control" id="neighborhoodProfile" name="neighborhood" readonly>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="city" class="form-label">Cidade</label>
+                                    <input type="text" class="form-control" id="cityProfile" name="city" readonly>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="state" class="form-label">Estado</label>
+                                    <select class="form-control" id="stateProfile" name="state" disabled>
+                                        <option value="">Selecione</option>
+                                        <option value="AC">Acre</option>
+                                        <option value="AL">Alagoas</option>
+                                        <option value="AP">Amapá</option>
+                                        <option value="AM">Amazonas</option>
+                                        <option value="BA">Bahia</option>
+                                        <option value="CE">Ceará</option>
+                                        <option value="DF">Distrito Federal</option>
+                                        <option value="ES">Espírito Santo</option>
+                                        <option value="GO">Goiás</option>
+                                        <option value="MA">Maranhão</option>
+                                        <option value="MT">Mato Grosso</option>
+                                        <option value="MS">Mato Grosso do Sul</option>
+                                        <option value="MG">Minas Gerais</option>
+                                        <option value="PA">Pará</option>
+                                        <option value="PB">Paraíba</option>
+                                        <option value="PR">Paraná</option>
+                                        <option value="PE">Pernambuco</option>
+                                        <option value="PI">Piauí</option>
+                                        <option value="RJ">Rio de Janeiro</option>
+                                        <option value="RN">Rio Grande do Norte</option>
+                                        <option value="RS">Rio Grande do Sul</option>
+                                        <option value="RO">Rondônia</option>
+                                        <option value="RR">Roraima</option>
+                                        <option value="SC">Santa Catarina</option>
+                                        <option value="SP">São Paulo</option>
+                                        <option value="SE">Sergipe</option>
+                                        <option value="TO">Tocantins</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="country" class="form-label">País</label>
+                                    <input type="text" class="form-control" id="countryProfile" name="country" value="Brasil" readonly>
+                                </div>
+                            </div>
+                            <div class="d-none" id="addressFormActions">
+                                <hr>
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button type="button" class="btn btn-outline-secondary" onclick="cancelEdit('address')">
+                                        <i class="fas fa-times me-1"></i> Cancelar
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save me-1"></i> Salvar Alterações
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Tab -->
+            <div class="tab-pane fade" id="security" role="tabpanel">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-shield-alt text-primary me-2"></i>
+                            Segurança da Conta
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="passwordForm">
+                            <div class="mb-3">
+                                <label for="currentPassword" class="form-label">Senha Atual *</label>
+                                <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="newPassword" class="form-label">Nova Senha *</label>
+                                <input type="password" class="form-control" id="newPassword" name="newPassword" minlength="6" required>
+                                <div class="form-text">A senha deve ter pelo menos 6 caracteres</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirmNewPassword" class="form-label">Confirmar Nova Senha *</label>
+                                <input type="password" class="form-control" id="confirmNewPassword" name="confirmNewPassword" required>
+                            </div>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="fas fa-key me-1"></i> Alterar Senha
+                            </button>
+                        </form>
+
+                        <hr class="my-4">
+
+                        <h6>Sessões Ativas</h6>
+                        <div class="list-group">
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">Sessão Atual</h6>
+                                    <p class="mb-1">Windows • Chrome • São Paulo, Brasil</p>
+                                    <small class="text-muted">Ativo agora</small>
+                                </div>
+                                <span class="badge bg-success">Atual</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preferences Tab -->
+            <div class="tab-pane fade" id="preferences" role="tabpanel">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-cog text-primary me-2"></i>
+                            Preferências
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="preferencesForm">
+                            <h6>Notificações</h6>
+                            <div class="mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="emailNotifications" checked>
+                                    <label class="form-check-label" for="emailNotifications">
+                                        Receber notificações por email
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="taskReminders" checked>
+                                    <label class="form-check-label" for="taskReminders">
+                                        Lembretes de tarefas
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="habitReminders" checked>
+                                    <label class="form-check-label" for="habitReminders">
+                                        Lembretes de hábitos
+                                    </label>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <h6>Interface</h6>
+                            <div class="mb-3">
+                                <label for="theme" class="form-label">Tema</label>
+                                <select class="form-control" id="theme" name="theme">
+                                    <option value="light">Claro</option>
+                                    <option value="dark">Escuro</option>
+                                    <option value="auto">Automático</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="language" class="form-label">Idioma</label>
+                                <select class="form-control" id="language" name="language">
+                                    <option value="pt-BR">Português (Brasil)</option>
+                                    <option value="en-US">English (US)</option>
+                                    <option value="es-ES">Español</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i> Salvar Preferências
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="profile.js"></script>
+</body>
+</html>
